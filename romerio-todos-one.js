@@ -2,12 +2,16 @@ Todos = new Mongo.Collection("todos");
 Lists = new Meteor.Collection('lists');
 
 Router.configure({
-	layoutTemplate: "main"
+	layoutTemplate: "main",
+    loadingTemplate: "loading"
 });
 
 Router.route("/", {
 	name: "home",
-	template: "home"
+	template: "home",
+    subscriptions: function(){
+        return Meteor.subscribe("lists");
+    }
 });
 Router.route("/register");
 Router.route("/login");
@@ -27,5 +31,9 @@ Router.route('/list/:_id', {
         } else {
             this.render("login");
         }
+    },
+    waitOn: function(){
+        var currentList = this.params._id;
+        return Meteor.subscribe('todos', currentList);
     }
 });

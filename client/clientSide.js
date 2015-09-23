@@ -1,3 +1,7 @@
+Template.lists.onCreated(function () {
+    this.subscribe('lists');
+});
+
 Template.todos.helpers({
     'todo': function(){
         var currentList = this._id;
@@ -106,46 +110,6 @@ Template.addList.events({
         });
         $('[name=listName]').val('');
     }
-});
-
-Template.register.events({
-    'submit form': function(event){
-        event.preventDefault();
-        var email = $('[name=email]').val();
-        var password = $('[name=password]').val();
-        Accounts.createUser({
-            email: email,
-            password: password
-        }, function(error){
-            if(error){
-                console.log(error.reason); // Output error if registration fails
-            } else {
-                Router.go("home"); // Redirect user if registration succeeds
-            }
-        });
-    }
-});
-
-Template.login.events({
-    'submit form': function(event){
-      event.preventDefault();
-      var email = $('[name=email]').val();
-      var password = $('[name=password]').val();
-      Meteor.loginWithPassword(email, password, function(error){
-          if(error){
-              console.log(error.reason);
-          } else {
-              var currentRoute = Router.current().route.getName();
-              if(currentRoute == "login"){
-                  Router.go("home");
-              }
-          }
-      });
-    }
-});
-
-Template.login.onRendered(function() {
-  $(".login").validate();
 });
 
 Template.navigation.events({
